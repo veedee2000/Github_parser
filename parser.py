@@ -37,12 +37,18 @@ def tag_extraction_for_repo():
             tags_needed.append(tags_crude.get_text().strip())
 
 def create_initial_directories():
+    try:
+        os.mkdir(repo)
+    except:
+        shutil.rmtree(repo)
+        os.mkdir(repo)
+
+    os.chdir(os.path.join(os.getcwd(), repo))
     for i in tags_needed:
-        shutil.rmtree(i)
         os.makedirs(i)
 
-def get_extension():
-    if
+# def get_extension():
+#     if
 
 
 def fill_dir():
@@ -76,6 +82,7 @@ print()
 for i in names_repo:
     print(i)
 print()
+now = os.getcwd()
 
 while 1:
 
@@ -103,6 +110,7 @@ while 1:
     for i in tags_needed:
         print(i)
     print()
+    os.chdir(now)
 
     create_initial_directories()
 
