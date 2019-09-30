@@ -7,6 +7,20 @@ import shutil
 
 tags_needed = []
 names_repo = []
+extension_count = {
+     'C++': 0,
+     'C': 0,
+     'PHP': 0,
+     'HTML': 0,
+     'CSS': 0,
+     'Python': 0,
+     'R': 0,
+     'RUBY': 0,
+     'KOTLIN': 0,
+     'Javascript': 0,
+     'RUST': 0,
+     'GO': 0
+}
 
 def tag_extraction_for_all():
     tags_crude = soup.findAll('h3')
@@ -22,6 +36,11 @@ def tag_extraction_for_all():
 
 def get_html():
     fname = open('Parsed_Html.txt', 'w')
+    fname.write(soup.prettify())
+    fname.close()
+
+def get_html1():
+    fname = open('Parsed_Html1.txt', 'w')
     fname.write(soup.prettify())
     fname.close()
 
@@ -47,14 +66,26 @@ def create_initial_directories():
     for i in tags_needed:
         os.makedirs(i)
 
-# def get_extension():
-#     if
 
+def is_extension(filename):
+    extension = {'C++': '.cpp' ,
+                 'C': '.c',
+                 'PHP': '.php',
+                 'HTML': '.html',
+                 'CSS': '.css',
+                 'Python': '.py',
+                 'R': '.r',
+                 'RUBY': '.rb',
+                 'KOTLIN': '.kt',
+                 'Javascript': '.js',
+                 'RUST': '.rs',
+                 'GO': '.go'
+                 }
 
-def fill_dir():
-    for i in tags_needed:
-        os.chdir(os.getcwd() + '/'.format(i))
-
+    for i in extension:
+        if filename.endswith(extension[i]):
+            extension_count[i] += 1
+            break
 
 
 
@@ -83,6 +114,7 @@ for i in names_repo:
     print(i)
 print()
 now = os.getcwd()
+tags_needed = []
 
 while 1:
 
@@ -102,16 +134,31 @@ while 1:
     soup = BeautifulSoup(html.text, 'html.parser')
     get_html()
 
-    tags_needed = []
-    tag_extraction_for_repo()
 
     print('Files in the repository: ')
 
+    tag_extraction_for_repo()
     for i in tags_needed:
         print(i)
     print()
+
     os.chdir(now)
 
     create_initial_directories()
 
-    fill_dir()
+    dirs_web_new = []
+    for i in tags_needed:
+        dirs_web_new.append(url + '/blob/master/' + i)
+        print(url + '/blob/master/' + i)
+
+    for dir in dirs_web_new:
+        tags_needed = []
+        print(dir)
+        html = requests.get(dir)
+        soup = BeautifulSoup(html.text, 'html.parser')
+        get_html1()
+        tag_extraction_for_repo()
+        for i in tags_needed:
+            is_extension(i)
+    for i in extension_count:
+        print(i,' : ',extension_count[i])
