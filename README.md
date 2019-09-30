@@ -21,7 +21,7 @@ A Github Parser written in Python3 which accepts username as input and shows var
 * **ScreenShot from the projects folder in atom**
   * Here you can see that the folder OOP has been created all subsequent directories and files in the form of a **tree like structure**
 
-5. Now, in the terminal you get a output on the basis of language depicting which language was used in which programs
+5. Now, in the terminal you get a output on the basis of language depicting number of programs written in each language in the chosen repo.
 
 <img width="569" alt="parser2 2" src="https://user-images.githubusercontent.com/43088920/65907295-c55f1380-e3e1-11e9-9e2f-b4ade07d3108.png">
 
