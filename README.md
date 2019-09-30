@@ -33,3 +33,18 @@ A Github Parser written in Python3 which accepts username as input and shows var
 
 
 ## More with analysis with Seaborn and Matplotlib coming soon........
+
+# Technologies used to make the project:-
+
+1. Web Parsing using **Requests** Python Library (Use command **pip3 install requests** to download the library)
+
+2. Web Scraping using **Beautiful Soup** (Use command **pip3 install bs4** to download the library)
+
+3. String Matching using **Regular Expressions** (a.k.a **regex**)
+
+4. Python data visualization using **Pyplot** Python Library (Use command **pip3 install pyplot** to download the library)
+
+5. Directories Creation using **OS** module (Use command **pip3 install os** to download the module)
+
+6. Directory Tree deletion using **SHUTIL** module
+
