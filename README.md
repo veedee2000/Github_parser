@@ -8,3 +8,7 @@ A Github Parser written in Python3 which accepts username as input and shows var
 
 2. With the given username, the parser extracts the user data from github and shows the number of repositories created/forked by the user .
 
+<img width="562" alt="parser2 1" src="https://user-images.githubusercontent.com/43088920/65906294-e7579680-e3df-11e9-82dc-919b40b02fef.png">
+
+3. Then, the parser provides the user with the choice of parsing any repository present in the repository
+
