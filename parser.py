@@ -2,6 +2,7 @@
 
 import os
 import re
+import plotly.graph_objects as go
 import requests
 from bs4 import BeautifulSoup
 import shutil
@@ -75,6 +76,7 @@ def check_if_file(filename):
             return True
     return False
 
+
 def create_initial_directory(repo):
     try:
         os.mkdir(repo)
@@ -103,6 +105,7 @@ def is_extension(filename):
             extension_count[i] += 1
             break
 
+
 def reset_extension_count():
     extension_count = {
          'C++': 0,
@@ -120,9 +123,11 @@ def reset_extension_count():
     }
     return extension_count
 
+
 def extract_file_name(i):
     s = re.findall('/([a-zA-Z0-9\._-]+)$', i)
     return s[0]
+
 
 def write_in_file(dir, file_name):
     html = requests.get(url + '/blob/master/' + dir)
@@ -133,6 +138,15 @@ def write_in_file(dir, file_name):
     for i in val:
         fname.write(i.get_text() + '\n')
     fname.close()
+
+def plot_with_plotly():
+    labels = []
+    values = []
+    for i in extension_count:
+        labels.append(i)
+        values.append(extension_count[i])
+    fig = go.Figure(data=[go.Pie(labels=labels, values=values)])
+    fig.show()
 
 ### --------------------------MAIN------------------------------###
 
@@ -223,4 +237,5 @@ while 1:
     for i in extension_count:
         s = ' ' * (10 - len(i))
         print(i,s,' : ',extension_count[i])
+    plot_with_plotly()
     extension_count = reset_extension_count()
