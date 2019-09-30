@@ -7,6 +7,7 @@ import shutil
 
 tags_needed = []
 names_repo = []
+
 extension_count = {
      'C++': 0,
      'C': 0,
@@ -49,11 +50,13 @@ def say_bye():
     fname.write('BYE-BYE  :)')
     fname.close()
 
+
 def tag_extraction_for_repo():
     tags_crudes = soup('td',{'class':'content'})
     for tags_crude in tags_crudes:
         if tags_crude.get_text().strip() != 'Failed to load latest commit information.':
             tags_needed.append(tags_crude.get_text().strip())
+
 
 def create_initial_directories():
     try:
@@ -65,7 +68,6 @@ def create_initial_directories():
     os.chdir(os.path.join(os.getcwd(), repo))
     for i in tags_needed:
         os.makedirs(i)
-
 
 def is_extension(filename):
     extension = {'C++': '.cpp' ,
@@ -87,7 +89,22 @@ def is_extension(filename):
             extension_count[i] += 1
             break
 
-
+def reset_extension_count():
+    extension_count = {
+         'C++': 0,
+         'C': 0,
+         'PHP': 0,
+         'HTML': 0,
+         'CSS': 0,
+         'Python': 0,
+         'R': 0,
+         'RUBY': 0,
+         'KOTLIN': 0,
+         'Javascript': 0,
+         'RUST': 0,
+         'GO': 0
+    }
+    return extension_count
 
 ### --------------------------MAIN -----------------------------###
 
@@ -117,7 +134,6 @@ now = os.getcwd()
 tags_needed = []
 
 while 1:
-
     val = input('Press 0 to exit or any other digit to continue: ')
     if int(val) == 0:
         say_bye()
@@ -149,16 +165,19 @@ while 1:
     dirs_web_new = []
     for i in tags_needed:
         dirs_web_new.append(url + '/blob/master/' + i)
-        print(url + '/blob/master/' + i)
 
     for dir in dirs_web_new:
         tags_needed = []
-        print(dir)
         html = requests.get(dir)
         soup = BeautifulSoup(html.text, 'html.parser')
         get_html1()
         tag_extraction_for_repo()
+
+
         for i in tags_needed:
             is_extension(i)
     for i in extension_count:
-        print(i,' : ',extension_count[i])
+        s = ' ' * (10 - len(i))
+        print(i,s,' : ',extension_count[i])
+    extension_count = reset_extension_count()
+    tags_needed = []
