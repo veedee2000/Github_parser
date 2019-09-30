@@ -1,6 +1,7 @@
 #                       CREATED BY VARUN DAS                      #
 
 import os
+import re
 import requests
 from bs4 import BeautifulSoup
 import shutil
@@ -40,10 +41,12 @@ def get_html():
     fname.write(soup.prettify())
     fname.close()
 
+
 def get_html1():
     fname = open('Parsed_Html1.txt', 'w')
     fname.write(soup.prettify())
     fname.close()
+
 
 def say_bye():
     fname = open('Parsed_Html.txt', 'w')
@@ -58,16 +61,27 @@ def tag_extraction_for_repo():
             tags_needed.append(tags_crude.get_text().strip())
 
 
-def create_initial_directories():
+def tag_extraction_for_repo_sec(initial):
+    tags_crudes = soup('td',{'class':'content'})
+    for tags_crude in tags_crudes:
+        if tags_crude.get_text().strip() != 'Failed to load latest commit information.':
+            tags_needed_sec.append(initial + '/' + tags_crude.get_text().strip())
+
+
+def check_if_file(filename):
+    for i in filename:
+        if i == '.':
+            is_extension(filename)
+            return True
+    return False
+
+def create_initial_directory(repo):
     try:
         os.mkdir(repo)
     except:
         shutil.rmtree(repo)
         os.mkdir(repo)
 
-    os.chdir(os.path.join(os.getcwd(), repo))
-    for i in tags_needed:
-        os.makedirs(i)
 
 def is_extension(filename):
     extension = {'C++': '.cpp' ,
@@ -106,7 +120,21 @@ def reset_extension_count():
     }
     return extension_count
 
-### --------------------------MAIN -----------------------------###
+def extract_file_name(i):
+    s = re.findall('/([a-zA-Z0-9\._-]+)$', i)
+    return s[0]
+
+def write_in_file(dir, file_name):
+    html = requests.get(url + '/blob/master/' + dir)
+    soup = BeautifulSoup(html.text, 'html.parser')
+    val = soup('td', {'class':'blob-code blob-code-inner js-file-line'})
+    fname = open(file_name, 'w')
+
+    for i in val:
+        fname.write(i.get_text() + '\n')
+    fname.close()
+
+### --------------------------MAIN------------------------------###
 
 base_url = 'http://github.com/'
 
@@ -135,10 +163,11 @@ tags_needed = []
 
 while 1:
     val = input('Press 0 to exit or any other digit to continue: ')
+    print()
     if int(val) == 0:
         say_bye()
         quit()
-    print()
+
     repo = input('Enter the repository name you would like to parse: ');
     print()
     print('Parsing repo : ',repo)
@@ -146,38 +175,55 @@ while 1:
     url = base_url + username + '/' + repo
     print('url : ',url)
     print()
+
     html = requests.get(url)
     soup = BeautifulSoup(html.text, 'html.parser')
     get_html()
 
-
-    print('Files in the repository: ')
+    print('Repositories/Files in the Parent Repository: ')
 
     tag_extraction_for_repo()
+
     for i in tags_needed:
         print(i)
     print()
 
     os.chdir(now)
 
-    create_initial_directories()
+    tags_needed_sec = []
 
-    dirs_web_new = []
-    for i in tags_needed:
-        dirs_web_new.append(url + '/blob/master/' + i)
-
-    for dir in dirs_web_new:
+    while 1:
+        filenames = []
+        for dir in tags_needed:
+            html = requests.get(url + '/blob/master/' + dir)
+            soup = BeautifulSoup(html.text, 'html.parser')
+            tag_extraction_for_repo_sec(dir)
         tags_needed = []
-        html = requests.get(dir)
-        soup = BeautifulSoup(html.text, 'html.parser')
-        get_html1()
-        tag_extraction_for_repo()
+        for i in tags_needed_sec:
+            if check_if_file(i) == False:
+                tags_needed.append(i)
+            else:
+                filenames.append(i)
+            tags_needed_sec = []
+        if len(tags_needed) == 0: break
 
+    create_initial_directory(repo)
+    os.chdir(os.path.join(os.getcwd(), repo))
 
-        for i in tags_needed:
-            is_extension(i)
-    for i in extension_count:
-        s = ' ' * (10 - len(i))
-        print(i,s,' : ',extension_count[i])
-    extension_count = reset_extension_count()
-    tags_needed = []
+    for file in filenames:
+        os.makedirs(file)
+
+    get_repo_directory = os.getcwd()
+
+    for i in filenames:
+        os.chdir(os.path.join(get_repo_directory, i))
+        file_name = extract_file_name(i)
+        write_in_file(i, file_name)
+
+    #     for i in tags_needed:
+    #         is_extension(i)
+    # for i in extension_count:
+    #     s = ' ' * (10 - len(i))
+    #     print(i,s,' : ',extension_count[i])
+    # extension_count = reset_extension_count()
+    # tags_needed = []
