@@ -220,10 +220,7 @@ while 1:
         file_name = extract_file_name(i)
         write_in_file(i, file_name)
 
-    #     for i in tags_needed:
-    #         is_extension(i)
-    # for i in extension_count:
-    #     s = ' ' * (10 - len(i))
-    #     print(i,s,' : ',extension_count[i])
-    # extension_count = reset_extension_count()
-    # tags_needed = []
+    for i in extension_count:
+        s = ' ' * (10 - len(i))
+        print(i,s,' : ',extension_count[i])
+    extension_count = reset_extension_count()
