@@ -25,4 +25,11 @@ A Github Parser written in Python3 which accepts username as input and shows var
 
 <img width="569" alt="parser2 2" src="https://user-images.githubusercontent.com/43088920/65907295-c55f1380-e3e1-11e9-9e2f-b4ade07d3108.png">
 
+## PIE-CHART using plotly (Opens in Browser)
+
+* **Using plotly.graph_objects**
+
+<img width="999" alt="scraper2 5" src="https://user-images.githubusercontent.com/43088920/65908324-db6dd380-e3e3-11e9-94a3-b8cd2c06eeec.png">
+
+
 ## More with analysis with Seaborn and Matplotlib coming soon........
