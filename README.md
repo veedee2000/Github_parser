@@ -27,7 +27,7 @@ A Github Parser written in Python3 which accepts username as input and shows var
 
 ## PIE-CHART using plotly (Opens in Browser)
 
-* **Using plotly.graph_objects**
+* **Using plotly.graph_objects** ( This is of another repo so don't get confused due to the mismatch with the above image :) )
 
 <img width="999" alt="scraper2 5" src="https://user-images.githubusercontent.com/43088920/65908324-db6dd380-e3e3-11e9-94a3-b8cd2c06eeec.png">
 
