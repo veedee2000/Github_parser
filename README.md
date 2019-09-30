@@ -16,3 +16,10 @@ A Github Parser written in Python3 which accepts username as input and shows var
 
 4. Now as the repository is being parsed the corresponding directories are simultaneously created in the same folder as the one in which **parser.py** is being run.
 
+<img width="309" alt="parser2 4" src="https://user-images.githubusercontent.com/43088920/65907001-20dcd180-e3e1-11e9-8601-5dea3229fc43.png">
+
+* **ScreenShot from the projects folder in atom**
+  * Here you can see that the folder OOP has been created all subsequent directories and files in the form of a **tree like structure**
+
+5. Now, in the terminal you get a output on the basis of language depicting which language was used in which programs
+
