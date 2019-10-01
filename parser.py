@@ -233,9 +233,17 @@ while 1:
         os.chdir(os.path.join(get_repo_directory, i))
         file_name = extract_file_name(i)
         write_in_file(i, file_name)
+    print('Total {} files parsed'.format(len(filenames)))
+    print()
+
+    print('Language       Number of programs')
+    print()
 
     for i in extension_count:
         s = ' ' * (10 - len(i))
-        print(i,s,' : ',extension_count[i])
+        if extension_count[i] > 0:
+            print(i,s,' : ',extension_count[i])
+    print()
+
     plot_with_plotly()
     extension_count = reset_extension_count()
