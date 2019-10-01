@@ -69,12 +69,16 @@ def tag_extraction_for_repo_sec(initial):
             tags_needed_sec.append(initial + '/' + tags_crude.get_text().strip())
 
 
-def check_if_file(filename):
-    for i in filename:
-        if i == '.':
-            is_extension(filename)
-            return True
+def check_if_files(filename):
+    if '.' in filename:
+        return True
     return False
+
+
+def check_if_files_rev(filename):
+    if '.' in filename:
+        return False
+    return True
 
 
 def create_initial_directory(repo):
@@ -169,9 +173,9 @@ tag_extraction_for_all()
 print('There are {} repositories in the github account of {}'.format(len(tags_needed), username))
 print()
 
-for i in names_repo:
-    print(i)
+print('\n'.join(names_repo))  # All repos in usernames account
 print()
+
 now = os.getcwd()
 tags_needed = []
 
@@ -198,8 +202,7 @@ while 1:
 
     tag_extraction_for_repo()
 
-    for i in tags_needed:
-        print(i)
+    print('\n'.join(tags_needed))   # Printing out the repositories/files
     print()
 
     os.chdir(now)
@@ -212,20 +215,20 @@ while 1:
             html = requests.get(url + '/blob/master/' + dir)
             soup = BeautifulSoup(html.text, 'html.parser')
             tag_extraction_for_repo_sec(dir)
-        tags_needed = []
-        for i in tags_needed_sec:
-            if check_if_file(i) == False:
-                tags_needed.append(i)
-            else:
-                filenames.append(i)
-            tags_needed_sec = []
+
+
+        filenames = list(filter(check_if_files, tags_needed_sec))
+        tags_needed = list(filter(check_if_files_rev, tags_needed_sec))
+
+        tags_needed_sec = []
         if len(tags_needed) == 0: break
 
     create_initial_directory(repo)
     os.chdir(os.path.join(os.getcwd(), repo))
 
-    for file in filenames:
-        os.makedirs(file)
+    p = list(map(os.makedirs, filenames))    # Creating the directories and adding counting file extensions
+    p1 = list(map(is_extension, filenames))
+
 
     get_repo_directory = os.getcwd()
 
@@ -233,16 +236,19 @@ while 1:
         os.chdir(os.path.join(get_repo_directory, i))
         file_name = extract_file_name(i)
         write_in_file(i, file_name)
+
     print('Total {} files parsed'.format(len(filenames)))
     print()
 
-    print('Language       Number of programs')
+    print('Language        Number of programs')
     print()
 
     for i in extension_count:
         s = ' ' * (10 - len(i))
         if extension_count[i] > 0:
             print(i,s,' : ',extension_count[i])
+    # s_new = list(map(lambda n : ' ' * (10 - len(n),)), extension_count)
+
     print()
 
     plot_with_plotly()
